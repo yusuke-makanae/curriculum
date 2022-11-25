@@ -1,0 +1,47 @@
+問1
+ルートブリッジにはブリッジプライオリティが最も小さな値のものが選出されるので
+答えはSwitch3
+
+問2
+
+ルートポートを選出します。
+ルートブリッジに最も近いポートがルートポートになるので
+ルートパスコストを使って選出します。
+
+ルートパスコストリスト
+1Gbps 4
+100Mbps 19
+10Mbps 100
+
+switch1
+switch1 - switch2 =19
+switch1 - switch3 - switch4 - switch2 = 100 + 100 + 100 = 300
+よってF0/1がRPとなる
+
+switch3
+switch3 - switch1 - switch2 = 100 + 19 = 119
+switch3 - switch4 - switch2 = 100 + 100 = 200
+よってE0/1がRPとなる
+
+switch4
+switch4 - switch2 = 100
+switch4 - switch3 - switch1 - switch2 = 100 + 100 + 19 =219
+よってE0/1がRPとなる
+
+次に指定ポートの選出をします。
+まずルートブリッジのすべてのポートは指定ポートとなります。
+ルートポートの対抗ポートは指定ポートとなります。以上から
+
+Switch1 F0/1 RP
+	  F0/2 DP
+Switch2 F0/1 DP
+	　F0/2 DP
+Switch3 E0/1 RP
+	  E0/2 ??
+Switch4 E0/1 RP
+	  E0/2 ??
+
+最後にブロッキングポートを選出します。
+どちらのポートにもならなかった
+Switch3 E0/2 , Switch4 E0/2
+がブロッキングポートとなります。
