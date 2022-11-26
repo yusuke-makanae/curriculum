@@ -14,34 +14,57 @@
 10Mbps 100
 
 switch1
-switch1 - switch2 =19
-switch1 - switch3 - switch4 - switch2 = 100 + 100 + 100 = 300
+switch1 - switch3 = 100
+switch1 - switch2 - switch4 - switch3 = 19 + 100 + 100 = 219
+よってF0/2がRPとなる
+
+
+switch2
+switch2 - switch1 - switch3 = 19 + 100 = 119
+switch2 - switch4 - switch3 = 100 + 100 = 200
 よってF0/1がRPとなる
 
-switch3
-switch3 - switch1 - switch2 = 100 + 19 = 119
-switch3 - switch4 - switch2 = 100 + 100 = 200
-よってE0/1がRPとなる
-
 switch4
-switch4 - switch2 = 100
-switch4 - switch3 - switch1 - switch2 = 100 + 100 + 19 =219
-よってE0/1がRPとなる
+switch4 - switch3 = 100
+switch4 - switch2 - switch1 - switch3 = 100 + 19 + 100 =219
+よってE0/2がRPとなる
 
 次に指定ポートの選出をします。
 まずルートブリッジのすべてのポートは指定ポートとなります。
-ルートポートの対抗ポートは指定ポートとなります。以上から
+ルートポートの対抗ポートは指定ポートとなります。
+以上から、一旦このような割り振りになります。
 
-Switch1 F0/1 RP
-	  F0/2 DP
-Switch2 F0/1 DP
-	　F0/2 DP
-Switch3 E0/1 RP
-	  E0/2 ??
-Switch4 E0/1 RP
-	  E0/2 ??
+Switch1 F0/1 DP
+	  F0/2 RP
+
+Switch2 F0/1 RP
+	　F0/2 
+
+Switch3 E0/1 DP
+	  E0/2 DP
+
+Switch4 E0/1 
+	  E0/2 RP
+
+この時switch2 - switch4間のポートに何の役割も割り振られていません。
+なので、送信元スイッチのブリッジIDが小さい方を指定ポートとして扱うルールに基づき
+Switch2：20481　Switch4：8193　を比較し、
+switch4のほうが値が小さいので、switch4のE0/1を指定ポートとします。
 
 最後にブロッキングポートを選出します。
 どちらのポートにもならなかった
-Switch3 E0/2 , Switch4 E0/2
-がブロッキングポートとなります。
+switch2のF0/2ががブロッキングポートとなります。
+
+最終的な形がこちらになります。
+
+Switch1 F0/1 DP
+	  F0/2 RP
+
+Switch2 F0/1 RP
+	　F0/2 BP
+
+Switch3 E0/1 DP
+	  E0/2 DP
+
+Switch4 E0/1 DP
+	  E0/2 RP
